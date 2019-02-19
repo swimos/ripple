@@ -9,6 +9,10 @@
   "repository": "https://github.com/swimos/ripple.git",
   "main": "dist/main/swim-ripple.js",
   "devDependencies": {
+    "@swim/core": "3.9.0",
+    "@swim/client": "3.9.0",
+    "@swim/ui": "3.9.0",
+    "@swim/ux": "3.9.0",
     "rollup": "1.2",
     "rollup-plugin-node-resolve": "4",
     "rollup-plugin-sourcemaps": "0",
