@@ -31,7 +31,6 @@ public class MirrorAgent extends AbstractAgent {
   int maxRipples;
   TimerRef rippleTimer;
 
-  // TODO: pojo type, probably
   @SwimLane("mode")
   final ValueLane<Value> mode = this.<Value>valueLane()
       .didSet((Value newValue, Value oldValue) -> {
@@ -40,11 +39,12 @@ public class MirrorAgent extends AbstractAgent {
         maxRipples = Math.max(Math.max(newValue.get("maxRipples").intValue(5), 1), minRipples);
       });
 
-  // TODO: pojo type, possibly. Probably move builder logic to ripples-pojo Form
-  // Expected syntax: @ripple{x:%f,y:%f}
   @SwimLane("ripple")
   final CommandLane<Value> ripple = this.<Value>commandLane()
       .onCommand(this::onRipple);
+
+  @SwimLane("scoreboard")
+  final ValueLane<Value> scoreboard = this.<Value>valueLane();
 
   void onRipple(Value value) {
     final Value id = value.get("id");
@@ -57,9 +57,33 @@ public class MirrorAgent extends AbstractAgent {
     final String color = value.get("color").stringValue("#80dc1a");
     final Record ripple = createRipple(id, x, y, (Record) phases, color);
     this.ripples.set(ripple);
+
+    Value scoreboard = this.scoreboard.get();
+    if ("#80dc1a".equals(color)) {
+      Value team = scoreboard.get("green");
+      final int oldRippleCount = team.get("rippleCount").intValue(0);
+      final int newRippleCount = oldRippleCount + ripple.get("phases").length() + 1;
+      team = team.updated("rippleCount", newRippleCount);
+      scoreboard = scoreboard.updated("green", team);
+      this.scoreboard.set(scoreboard);
+    } else if ("#c200fa".equals(color)) {
+      Value team = scoreboard.get("magenta");
+      final int oldRippleCount = team.get("rippleCount").intValue(0);
+      final int newRippleCount = oldRippleCount + ripple.get("phases").length() + 1;
+      team = team.updated("rippleCount", newRippleCount);
+      scoreboard = scoreboard.updated("magenta", team);
+      this.scoreboard.set(scoreboard);
+    } else if ("#56dbb6".equals(color)) {
+      Value team = scoreboard.get("cyan");
+      final int oldRippleCount = team.get("rippleCount").intValue(0);
+      final int newRippleCount = oldRippleCount + ripple.get("phases").length() + 1;
+      team = team.updated("rippleCount", newRippleCount);
+      scoreboard = scoreboard.updated("cyan", team);
+      this.scoreboard.set(scoreboard);
+    }
+    //System.out.println("scoreboard: " + Recon.toString(scoreboard));
   }
 
-  // TODO: pojo type, almost definitely
   @SwimLane("ripples")
   final ValueLane<Value> ripples = this.<Value>valueLane()
       .didSet(this::didSetRipple);
@@ -68,11 +92,10 @@ public class MirrorAgent extends AbstractAgent {
     System.out.println("latest ripple: " + Recon.toString(newValue));
   }
 
-  // TODO
   @SwimLane("charges")
-  final MapLane<Value, Value> charges = this.<Value, Value>mapLane();
+  final MapLane<Value, Value> charges = this.<Value, Value>mapLane()
+      .didRemove(this::onUncharge);
 
-  // TODO: populate charges
   @SwimLane("charge")
   final CommandLane<Value> charge = this.<Value>commandLane()
       .onCommand(this::onCharge);
@@ -108,6 +131,39 @@ public class MirrorAgent extends AbstractAgent {
         this.charges.remove(id);
       }
     }
+  }
+
+  void onUncharge(Value key, Value value) {
+    //System.out.println("onUncharge " + Recon.toString(key) + ": " + Recon.toString(value));
+    final long t1 = System.currentTimeMillis();
+    final long t0 = value.get("t0").longValue(0L);
+    final long dt = t1 - t0;
+    final String color = value.get("color").stringValue(null);
+
+    Value scoreboard = this.scoreboard.get();
+    if ("#80dc1a".equals(color) && t0 != 0L) {
+      Value team = scoreboard.get("green");
+      final long oldChargeTime = team.get("chargeTime").longValue(0L);
+      final long newChargeTime = oldChargeTime + dt;
+      team = team.updated("chargeTime", newChargeTime);
+      scoreboard = scoreboard.updated("green", team);
+      this.scoreboard.set(scoreboard);
+    } else if ("#c200fa".equals(color) && t0 != 0L) {
+      Value team = scoreboard.get("magenta");
+      final long oldChargeTime = team.get("chargeTime").longValue(0L);
+      final long newChargeTime = oldChargeTime + dt;
+      team = team.updated("chargeTime", newChargeTime);
+      scoreboard = scoreboard.updated("magenta", team);
+      this.scoreboard.set(scoreboard);
+    } else if ("#56dbb6".equals(color) && t0 != 0L) {
+      Value team = scoreboard.get("cyan");
+      final long oldChargeTime = team.get("chargeTime").longValue(0L);
+      final long newChargeTime = oldChargeTime + dt;
+      team = team.updated("chargeTime", newChargeTime);
+      scoreboard = scoreboard.updated("cyan", team);
+      this.scoreboard.set(scoreboard);
+    }
+    //System.out.println("scoreboard: " + Recon.toString(scoreboard));
   }
 
   void cleanupCharges() {
