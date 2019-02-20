@@ -143,6 +143,9 @@ public class MirrorAgent extends AbstractAgent {
     Value scoreboard = this.scoreboard.get();
     if ("#80dc1a".equals(color) && t0 != 0L) {
       Value team = scoreboard.get("green");
+      final int oldChargeCount = team.get("chargeCount").intValue(0);
+      final int newChargeCount = oldChargeCount + 1;
+      team = team.updated("chargeCount", newChargeCount);
       final long oldChargeTime = team.get("chargeTime").longValue(0L);
       final long newChargeTime = oldChargeTime + dt;
       team = team.updated("chargeTime", newChargeTime);
@@ -150,6 +153,9 @@ public class MirrorAgent extends AbstractAgent {
       this.scoreboard.set(scoreboard);
     } else if ("#c200fa".equals(color) && t0 != 0L) {
       Value team = scoreboard.get("magenta");
+      final int oldChargeCount = team.get("chargeCount").intValue(0);
+      final int newChargeCount = oldChargeCount + 1;
+      team = team.updated("chargeCount", newChargeCount);
       final long oldChargeTime = team.get("chargeTime").longValue(0L);
       final long newChargeTime = oldChargeTime + dt;
       team = team.updated("chargeTime", newChargeTime);
@@ -157,6 +163,9 @@ public class MirrorAgent extends AbstractAgent {
       this.scoreboard.set(scoreboard);
     } else if ("#56dbb6".equals(color) && t0 != 0L) {
       Value team = scoreboard.get("cyan");
+      final int oldChargeCount = team.get("chargeCount").intValue(0);
+      final int newChargeCount = oldChargeCount + 1;
+      team = team.updated("chargeCount", newChargeCount);
       final long oldChargeTime = team.get("chargeTime").longValue(0L);
       final long newChargeTime = oldChargeTime + dt;
       team = team.updated("chargeTime", newChargeTime);
