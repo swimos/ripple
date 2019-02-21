@@ -75,8 +75,7 @@ export class MirrorView extends GraphicView {
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.id = id;
     this.mode = mode;
-    const colors = ["#80dc1a", "#c200fa", "#56dbb6"];
-    this.color = Color.fromAny(colors[Math.floor(colors.length * Math.random())]);
+    this.color = Color.fromAny(MirrorView.colors[Math.floor(MirrorView.colors.length * Math.random())]);
     this.captive = false;
     this._touchCount = 0;
     this._presses = {};
@@ -397,6 +396,9 @@ export class MirrorView extends GraphicView {
       canvasView.off("touchend", this.onTouchEnd);
     }
   }
+
+  /** @hidden */
+  static colors: string[] = ["#80dc1a", "#56dbb6", "#c200fa"];
 
   // Forward type declarations
   /** @hidden */
