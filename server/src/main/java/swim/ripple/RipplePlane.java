@@ -14,25 +14,25 @@
 
 package swim.ripple;
 
-import java.io.IOException;
+import swim.api.SwimAgent;
 import swim.api.SwimRoute;
-import swim.api.agent.AgentType;
+import swim.api.agent.AgentRoute;
+import swim.api.kernel.Kernel;
 import swim.api.plane.AbstractPlane;
-import swim.api.plane.PlaneContext;
-import swim.api.server.ServerContext;
-import swim.loader.ServerLoader;
+import swim.server.ServerLoader;
 
 public class RipplePlane extends AbstractPlane {
-
+  @SwimAgent("mirror")
   @SwimRoute("/mirror/:id")
-  final AgentType<?> mirrorAgent = agentClass(MirrorAgent.class);
+  AgentRoute<MirrorAgent> mirrorAgent;
 
-  public static void main(String[] args) throws IOException, InterruptedException {
-    final ServerContext server = ServerLoader.load(RipplePlane.class.getModule()).serverContext();
-    final PlaneContext plane = server.getPlane("ripple").planeContext();
+  public static void main(String[] args) {
+    final Kernel kernel = ServerLoader.loadServer();
+    final RipplePlane plane = kernel.getPlane("ripple");
 
-    server.start();
+    kernel.start();
     System.out.println("Running RipplePlane...");
-    server.run();
+
+    kernel.run(); // blocks until termination
   }
 }

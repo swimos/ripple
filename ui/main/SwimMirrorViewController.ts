@@ -23,7 +23,7 @@ import {ChargeMode, ChargeView} from "./ChargeView";
 export class SwimMirrorViewController extends MirrorViewController implements EventDownlinkObserver, MapDownlinkObserver<Value, Value, AnyValue, AnyValue> {
   nodeRef: NodeRef;
   ripplesDownlink: EventDownlink | null;
-  chargesDownlink: MapDownlink<Value, Value> | null;
+  chargesDownlink: MapDownlink<Value, Value, AnyValue, AnyValue> | null;
 
   constructor(nodeRef: NodeRef) {
     super();

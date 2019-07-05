@@ -1,16 +1,18 @@
-@server {
-  @plane("ripple") {
-    class: "swim.ripple.RipplePlane"
-  }
+@kernel(class: 'swim.store.db.DbStoreKernel', optional: true)
+@kernel(class: 'swim.reflect.ReflectKernel', optional: true)
+
+ripple: @plane {
+  class: "swim.ripple.RipplePlane"
   @store {
-    path: "/tmp/swim-ripple"
+    path: "/tmp/swim-ripple/"
   }
-  @http(port: 9001) {
-    plane: "ripple"
-    documentRoot: "./ui/"
-    @websocket {
-      serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-      clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-    }
+}
+
+@warp(port: 9001) {
+  plane: "ripple"
+  documentRoot: "./ui/"
+  @websocket {
+    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
   }
 }

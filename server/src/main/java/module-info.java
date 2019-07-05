@@ -1,6 +1,7 @@
 open module swim.ripple {
-  requires transitive swim.server;
-  requires swim.loader;
+  requires swim.recon;
+  requires transitive swim.api;
+  requires swim.server;
 
   exports swim.ripple;
 
