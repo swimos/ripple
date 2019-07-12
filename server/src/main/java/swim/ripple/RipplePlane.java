@@ -17,8 +17,9 @@ package swim.ripple;
 import swim.api.SwimAgent;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
-import swim.api.kernel.Kernel;
 import swim.api.plane.AbstractPlane;
+import swim.fabric.Fabric;
+import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 
 public class RipplePlane extends AbstractPlane {
@@ -28,7 +29,7 @@ public class RipplePlane extends AbstractPlane {
 
   public static void main(String[] args) {
     final Kernel kernel = ServerLoader.loadServer();
-    final RipplePlane plane = kernel.getPlane("ripple");
+    final Fabric fabric = (Fabric) kernel.getSpace("ripple");
 
     kernel.start();
     System.out.println("Running RipplePlane...");
