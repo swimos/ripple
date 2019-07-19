@@ -3,6 +3,10 @@
 
 ripple: @fabric {
   @plane(class: "swim.ripple.RipplePlane")
+  @node {
+    pattern: "/mirror/:id"
+    @agent(class: "swim.ripple.MirrorAgent")
+  }
   @store {
     path: "/tmp/swim-ripple/"
   }
