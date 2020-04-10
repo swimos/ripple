@@ -18,7 +18,7 @@ import {Color} from "@swim/color";
 import {Value, Record, Data, Text} from "@swim/structure";
 import {Interpolator} from "@swim/interpolate";
 import {RenderingContext} from "@swim/render";
-import {GraphicView, CanvasView} from "@swim/view";
+import {GraphicView, CanvasView, RenderViewContext} from "@swim/view";
 import {ChargeMode, ChargeView} from "./ChargeView";
 import {MirrorViewObserver} from "./MirrorViewObserver";
 import {MirrorViewController} from "./MirrorViewController";
@@ -119,16 +119,17 @@ export class MirrorView extends GraphicView {
     canvasView.off("mouseup", this.onMouseUp);
   }
 
-  protected onAnimate(t: number): void {
+  protected onAnimate(viewContext: RenderViewContext): void {
     // stub
   }
 
-  protected onRender(context: RenderingContext): void {
+  protected onRender(viewContext: RenderViewContext): void {
+    const context = viewContext.renderingContext;
     context.save();
     const bounds = this._bounds;
     this.renderBonds(context, bounds);
     context.restore();
-    this.setDirty(false);
+    //this.setDirty(false); // TODO
   }
 
   protected renderBonds(context: RenderingContext, bounds: BoxR2): void {

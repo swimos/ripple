@@ -17,7 +17,7 @@ import {BoxR2} from "@swim/math";
 import {AnyColor, Color} from "@swim/color";
 import {Transition} from "@swim/transition";
 import {RenderingContext} from "@swim/render";
-import {MemberAnimator, NumberMemberAnimator, GraphicView, GraphicViewController} from "@swim/view";
+import {MemberAnimator, NumberMemberAnimator, GraphicView, GraphicViewController, RenderViewContext} from "@swim/view";
 import {MirrorView} from "./MirrorView";
 
 export interface ChargeMode {
@@ -192,7 +192,8 @@ export class ChargeView extends GraphicView {
     }
   }
 
-  protected onAnimate(t: number): void {
+  protected onAnimate(viewContext: RenderViewContext): void {
+    const t = viewContext.updateTime;
     this.originX.onFrame(t);
     this.originY.onFrame(t);
     this.centerX.onFrame(t);
@@ -212,7 +213,8 @@ export class ChargeView extends GraphicView {
     }
   }
 
-  protected onRender(context: RenderingContext): void {
+  protected onRender(viewContext: RenderViewContext): void {
+    const context = viewContext.renderingContext;
     context.save();
     const bounds = this._bounds;
     if (this._pressed) {
@@ -220,7 +222,7 @@ export class ChargeView extends GraphicView {
     }
     this.renderRipples(context, bounds);
     context.restore();
-    this.setDirty(false);
+    //this.setDirty(false);
   }
 
   protected renderCharge(context: RenderingContext, bounds: BoxR2): void {
@@ -285,7 +287,7 @@ export class ChargeView extends GraphicView {
   onPressMove(centerX: number, centerY: number): void {
     this.centerX.setState(centerX);
     this.centerY.setState(centerY);
-    this.animate();
+    //this.animate(); TODO
   }
 
   onPressUp(): void {
@@ -294,7 +296,7 @@ export class ChargeView extends GraphicView {
       this._pressTimer = 0;
     }
     this._pressed = false;
-    this.animate();
+    //this.animate(); //TODO
   }
 }
 MirrorView.ChargeView = ChargeView;
