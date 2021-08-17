@@ -13,6 +13,8 @@
     "@swim/client": "3.10.2",
     "@swim/ui": "3.10.2",
     "@swim/ux": "3.10.2",
+    "path-parse": ">=1.0.7",
+    "kind-of": ">=6.0.3",
     "rollup": "1.16",
     "rollup-plugin-node-resolve": "5",
     "rollup-plugin-sourcemaps": "0",

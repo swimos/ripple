@@ -29,7 +29,7 @@ public class RipplePlane extends AbstractPlane {
 
   public static void main(String[] args) {
     final Kernel kernel = ServerLoader.loadServer();
-    final Space space = (Space) kernel.getSpace("ripple");
+    final Space space = kernel.getSpace("ripple");
 
     kernel.start();
     System.out.println("Running RipplePlane...");
