@@ -1,6 +1,6 @@
 # Ripple
 
-See [Ripple in action](http://www.swim.ai/showcase/ripple).
+See [Ripple in action](https://ripple.swim.inc).
 
 ## Prerequisites
 
