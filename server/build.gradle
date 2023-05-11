@@ -9,6 +9,11 @@ buildscript {
   }
 }
 
+plugins {
+  id 'com.google.cloud.tools.jib' version '3.3.1'
+}
+
+
 apply plugin: 'java-library'
 apply plugin: 'application'
 apply plugin: 'nebula.ospackage-application'
@@ -90,6 +95,34 @@ afterEvaluate {
         'Implementation-Title': moduleName,
         'Implementation-Version': archiveVersion,
         'Main-Class': mainClassName)
+    }
+  }
+
+  jib {
+    from {
+      image = "openjdk:11"
+    }
+    to {
+      image = "nstream/demo-ripple:${version}"
+      auth {
+        username = "$System.env.REGISTRY_USERNAME"
+        password = "$System.env.REGISTRY_PASSWORD"
+      }
+    }
+    container {
+      mainClass = mainClassName
+      ports = ['9001/tcp']
+      jvmFlags = ['-Dswim.config=/config/server.recon']
+    }
+    extraDirectories {
+      paths {
+        path {
+          // copies a single-file.xml
+          from = 'src/main/resources'
+          into = '/config'
+          includes = ['*.recon']
+        }
+      }
     }
   }
 
