@@ -34,12 +34,16 @@ pipeline {
         stage('build') {
             steps {
                 container('node') {
-                    sh "npm install"
-                    sh "npm run compile"
-                    sh "npm run bundle"
+                    dir('ui') {
+                        sh "npm install"
+                        sh "npm run compile"
+                        sh "npm run bundle"
+                    }
                 }
                 container('java') {
-                    sh "./gradlew clean build --no-daemon"
+                    dir('server') {
+                        sh "./gradlew clean build --no-daemon"
+                    }
                 }
             }
         }
