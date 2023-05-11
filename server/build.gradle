@@ -24,6 +24,7 @@ version = project.property('application.version')
 mainClassName = 'swim.ripple.RipplePlane'
 ext.moduleName = 'swim.ripple'
 ext.compilerArgs = ['-Xlint:all']
+ext.swimVersion = project.property('swim.version')
 
 // Build with `gradle -Pno-modules` to force compatibility with legacy JVMs.
 def javaVersion = System.getProperty('java.version').split('\\.')
@@ -36,9 +37,9 @@ repositories {
 }
 
 dependencies {
-  implementation group: 'org.swimos', name: 'swim-recon', version: version
-  api group: 'org.swimos', name: 'swim-api', version: version
-  implementation group: 'org.swimos', name: 'swim-server', version: version
+  implementation group: 'org.swimos', name: 'swim-recon', version: swimVersion
+  api group: 'org.swimos', name: 'swim-api', version: swimVersion
+  implementation group: 'org.swimos', name: 'swim-server', version: swimVersion
 }
 
 afterEvaluate {
