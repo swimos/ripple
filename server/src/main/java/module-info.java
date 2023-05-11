@@ -20,4 +20,5 @@ open module swim.ripple {
   exports swim.ripple;
 
   provides swim.api.plane.Plane with swim.ripple.RipplePlane;
+  provides swim.kernel.Kernel with swim.ripple.RippleUiRouter;
 }

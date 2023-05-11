@@ -22,7 +22,30 @@ var documentUri = swim.Uri.parse(document.location.href);
 var host = documentUri.query().get("host");
 var room = documentUri.fragmentIdentifier() || "wall";
 
-var hostUri = host || "warp://localhost:9001";
+const baseUri = swim.Uri.parse(document.location.href);
+const hostParam = baseUri.host().toString();
+const schemeParam = baseUri.scheme().toString();
+const portParam = baseUri.port();
+const warpScheme = schemeParam === "https" ? "warps":"warp"
+
+let warpHost;
+
+if(hostParam.endsWith("swim.services")) {
+  warpHost = "ripple.swim.services"
+} else if(hostParam.endsWith("nstream-demo.io")) {
+  warpHost = "ripple.services.nstream-demo.io"
+} else {
+  warpHost = hostParam;
+}
+
+let hostUri;
+
+if (portParam === undefined) {
+  hostUri = `${warpScheme}://${warpHost}`
+} else {
+  hostUri = `${warpScheme}://${warpHost}:${portParam.toString()}`
+}
+
 var nodeUri = swim.UriPath.from("mirror", room).toString();
 var nodeRef = swim.client.nodeRef(hostUri, nodeUri);
 var mirrorController = new swim.SwimMirrorViewController(nodeRef);
@@ -31,6 +54,14 @@ mirror.captive = true;
 
 canvas.append(mirror);
 
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PMET8J149M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PMET8J149M');
     </script>
   </body>
 </html>

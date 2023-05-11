@@ -9,6 +9,11 @@ buildscript {
   }
 }
 
+plugins {
+  id 'com.google.cloud.tools.jib' version '3.3.1'
+}
+
+
 apply plugin: 'java-library'
 apply plugin: 'application'
 apply plugin: 'nebula.ospackage-application'
@@ -19,6 +24,7 @@ version = project.property('application.version')
 mainClassName = 'swim.ripple.RipplePlane'
 ext.moduleName = 'swim.ripple'
 ext.compilerArgs = ['-Xlint:all']
+ext.swimVersion = project.property('swim.version')
 
 // Build with `gradle -Pno-modules` to force compatibility with legacy JVMs.
 def javaVersion = System.getProperty('java.version').split('\\.')
@@ -31,9 +37,9 @@ repositories {
 }
 
 dependencies {
-  implementation group: 'org.swimos', name: 'swim-recon', version: version
-  api group: 'org.swimos', name: 'swim-api', version: version
-  implementation group: 'org.swimos', name: 'swim-server', version: version
+  implementation group: 'org.swimos', name: 'swim-recon', version: swimVersion
+  api group: 'org.swimos', name: 'swim-api', version: swimVersion
+  implementation group: 'org.swimos', name: 'swim-server', version: swimVersion
 }
 
 afterEvaluate {
@@ -90,6 +96,34 @@ afterEvaluate {
         'Implementation-Title': moduleName,
         'Implementation-Version': archiveVersion,
         'Main-Class': mainClassName)
+    }
+  }
+
+  jib {
+    from {
+      image = "openjdk:11"
+    }
+    to {
+      image = "nstream/demo-ripple:${version}"
+      auth {
+        username = "$System.env.REGISTRY_USERNAME"
+        password = "$System.env.REGISTRY_PASSWORD"
+      }
+    }
+    container {
+      mainClass = mainClassName
+      ports = ['9001/tcp']
+      jvmFlags = ['-Dswim.config=/config/server.recon']
+    }
+    extraDirectories {
+      paths {
+        path {
+          // copies a single-file.xml
+          from = 'src/main/resources'
+          into = '/config'
+          includes = ['*.recon']
+        }
+      }
     }
   }
 
