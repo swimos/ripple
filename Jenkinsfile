@@ -1,3 +1,3 @@
-library('jcustenborder-jenkins-pipeline@server-ui')
+library('jenkins-pipeline')
 
 demoServerUiPipeline("ripple")
