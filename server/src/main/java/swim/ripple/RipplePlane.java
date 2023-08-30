@@ -14,8 +14,6 @@
 
 package swim.ripple;
 
-import swim.api.SwimAgent;
-import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.api.space.Space;
@@ -23,8 +21,7 @@ import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 
 public class RipplePlane extends AbstractPlane {
-  @SwimAgent("mirror")
-  @SwimRoute("/mirror/:id")
+
   AgentRoute<MirrorAgent> mirrorAgent;
 
   public static void main(String[] args) {
