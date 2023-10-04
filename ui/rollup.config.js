@@ -1,91 +1,56 @@
-import nodeResolve from "rollup-plugin-node-resolve";
+import nodeResolve from "@rollup/plugin-node-resolve";
 import sourcemaps from "rollup-plugin-sourcemaps";
+import {terser} from "rollup-plugin-terser";
 
 const script = "swim-ripple";
 const namespace = "swim";
 
-const main = {
-  input: "./lib/main/index.js",
-  output: {
-    file: `./dist/main/${script}.js`,
-    name: namespace,
-    format: "umd",
-    globals: {
-      "@swim/util": "swim",
-      "@swim/codec": "swim",
-      "@swim/collections": "swim",
-      "@swim/structure": "swim",
-      "@swim/streamlet": "swim",
-      "@swim/dataflow": "swim",
-      "@swim/recon": "swim",
-      "@swim/math": "swim",
-      "@swim/time": "swim",
-      "@swim/uri": "swim",
-      "@swim/warp": "swim",
-      "@swim/client": "swim",
-      "@swim/angle": "swim",
-      "@swim/length": "swim",
-      "@swim/color": "swim",
-      "@swim/font": "swim",
-      "@swim/transform": "swim",
-      "@swim/interpolate": "swim",
-      "@swim/scale": "swim",
-      "@swim/transition": "swim",
-      "@swim/animate": "swim",
-      "@swim/dom": "swim",
-      "@swim/style": "swim",
-      "@swim/render": "swim",
-      "@swim/constraint": "swim",
-      "@swim/view": "swim",
-      "@swim/shape": "swim",
-      "@swim/typeset": "swim",
-      "@swim/gesture": "swim",
-    },
-    sourcemap: true,
-    interop: false,
-    extend: true,
-  },
-  external: [
-    "@swim/util",
-    "@swim/codec",
-    "@swim/collections",
-    "@swim/structure",
-    "@swim/streamlet",
-    "@swim/dataflow",
-    "@swim/recon",
-    "@swim/math",
-    "@swim/time",
-    "@swim/uri",
-    "@swim/warp",
-    "@swim/client",
-    "@swim/angle",
-    "@swim/length",
-    "@swim/color",
-    "@swim/font",
-    "@swim/transform",
-    "@swim/interpolate",
-    "@swim/scale",
-    "@swim/transition",
-    "@swim/animate",
-    "@swim/dom",
-    "@swim/style",
-    "@swim/render",
-    "@swim/constraint",
-    "@swim/view",
-    "@swim/shape",
-    "@swim/typeset",
-    "@swim/gesture",
-  ],
-  plugins: [
-    nodeResolve({customResolveOptions: {paths: "."}}),
-    sourcemaps(),
-  ],
-  onwarn(warning, warn) {
-    if (warning.code === "CIRCULAR_DEPENDENCY") return;
-    warn(warning);
-  },
+const external = [
+  /^@nstream\//,
+  /^@swim\//
+];
+
+const globals = function (name) {
+  if (/^@nstream\//.test(name)) {
+    return "nstream";
+  } else if (/^@swim\//.test(name)) {
+    return "swim";
+  }
+  return void 0;
 };
 
-const targets = [main];
-targets.main = main;
-export default targets;
+const beautify = terser({
+  compress: false,
+  mangle: false,
+  output: {
+    preamble: `// ${pkg.name} v${pkg.version} (c) ${pkg.copyright}`,
+    beautify: true,
+    comments: false,
+    indent_level: 2,
+  },
+});
+
+export default [
+  {
+    input: "./lib/main/index.js",
+    output: {
+      file: `./dist/main/${script}.js`,
+      name: namespace,
+      format: "umd",
+      globals: globals,
+      sourcemap: true,
+      interop: false,
+      extend: true,
+      plugins: [beautify],
+    },
+    external: external,
+    plugins: [
+      nodeResolve({customResolveOptions: {paths: "."}}),
+      sourcemaps(),
+    ],
+    onwarn(warning, warn) {
+      if (warning.code === "CIRCULAR_DEPENDENCY") return;
+      warn(warning);
+    },
+  },
+];
