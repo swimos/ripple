@@ -24,7 +24,8 @@
   },
   "scripts": {
     "compile": "tsc -b",
-    "bundle": "rollup -c",
-    "all": "npm run compile && npm run bundle"
+    "bundle": "rollup -c && npm run copy-app",
+    "copy-app": "cp ./index.html ./dist",
+    "build": "npm run compile && npm run bundle"
   }
 }
