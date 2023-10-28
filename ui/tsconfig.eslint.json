@@ -1,5 +1,10 @@
 {
-  "extends": "tslint:recommended",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.js"],
+  "exclude": ["node_modules"],
   "rules": {
     "array-type": false,
     "ban-types": false,
@@ -20,14 +25,14 @@
     "object-literal-shorthand": false,
     "object-literal-sort-keys": false,
     "only-arrow-functions": false,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "prefer-for-of": false,
     "space-before-function-paren": [true, {"anonymous": "always", "named": "never"}],
     "quotemark": ["single", "avoid-escape"],
     "unified-signatures": false,
     "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
     "whitespace": false,
-    "no-trailing-whitespace": false,
+    "no-trailing-whitespace": true,
     "no-console": [false, "log", "error"]
   }
 }

@@ -1,5 +1,5 @@
 import { CanvasView } from '@swim/graphics';
-import { BoardController, BoardView, PanelView } from '@swim/panel';
+import { BoardController } from "@swim/panel";
 import { Uri } from '@swim/uri';
 import { View, ViewRef } from '@swim/view';
 
@@ -25,8 +25,8 @@ export class MirrorController extends BoardController {
     initView(canvasView: CanvasView): void {
       canvasView.set({
         style: {
-          width: '100%',
-          height: '100%',
+          width: "100%",
+          height: "100%",
         },
       });
     }
