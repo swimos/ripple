@@ -12,16 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  MirrorMode,
-  MirrorView,
-} from "./MirrorView";
-export {MirrorViewObserver} from "./MirrorViewObserver";
-export {MirrorViewController} from "./MirrorViewController";
-
-export {
-  ChargeMode,
-  ChargeView,
-} from "./ChargeView";
-
-export {SwimMirrorViewController} from "./SwimMirrorViewController";
+// export * from "./NEW_MirrorView";
+// export * from "./NEW_MirrorViewObserver";
+// export * from "./NEW_MirrorViewController";
+// export * from "./NEW_ChargeView";
+// export * from "./NEW_SwimMirrorViewController";
+export * from './MirrorController';

@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig-main",
-  "compilerOptions": {
-    "baseUrl": "../",
-    "outDir": "../lib/main"
-  }
-}
