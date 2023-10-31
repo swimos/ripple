@@ -63,14 +63,13 @@ const bodyView = swim.HtmlView.fromNode(document.body).set({
     margin: 0,
   }
 });
+console.log('bodyView: ', bodyView);
 
 // create root controller
-const mirrorController = new swim.rippleDemo.MirrorController();
-const sheetView = mirrorController.sheet.attachView();
-mirrorController.canvas.insertView(sheetView);
+const appController = new swim.rippleDemo.AppController();
 
 // insert sheet view of root controller into body view
-mirrorController.sheet.insertView(bodyView).set({
+appController.sheet.insertView(bodyView).set({
   style: {
     width: '100%',
     height: '100%',
@@ -78,6 +77,14 @@ mirrorController.sheet.insertView(bodyView).set({
     minHeight: '100%',
   },
 });
+
+const mirrorController = appController.mirrorController.attachController();
+const mirrorPanelView = mirrorController.panel.insertView(appController.sheet.attachView());
+console.log('mirrorPanelView: ', mirrorPanelView);
+console.log('mirrorController: ', mirrorController);
+appController.appendChild(mirrorController);
+
+console.log('appController: ', appController);
     </script>
   </body>
 </html>

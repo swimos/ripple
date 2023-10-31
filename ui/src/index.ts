@@ -17,4 +17,6 @@
 // export * from "./NEW_MirrorViewController";
 // export * from "./NEW_ChargeView";
 // export * from "./NEW_SwimMirrorViewController";
+export * from "./AppController";
 export * from './MirrorController';
+export * from "./MirrorView";
